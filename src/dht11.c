@@ -45,7 +45,7 @@ uint8_t c = 0;
 
 void dht_write_data(char* data) // пишет в массив дата строку
 {
-	unsigned char I_RH,D_RH,I_TEMP,D_TEMP;
+	unsigned char I_RH,D_RH,I_TEMP,D_TEMP,C_SUMM_GET,CSUMM;
 
 	dht_request();
 	dht_response();
@@ -53,8 +53,19 @@ void dht_write_data(char* data) // пишет в массив дата стро�
 	D_RH = dht_receive_data(); // дробная*/
 	I_TEMP = dht_receive_data();
 	D_TEMP = dht_receive_data();
+	C_SUMM_GET = dht_receive_data();
+	CSUMM = ((I_RH + D_RH + I_TEMP + D_TEMP) & 0xFF);
 	
-sprintf(data,"%d %d", I_RH,I_TEMP);
+	if (C_SUMM_GET == CSUMM)
+	{
+		sprintf(data,"%d %d", I_RH,I_TEMP);
+	}
+	else{
+		sprintf(data,"ERR");
+
+	}
+	
+
 //	sprintf(data,"%d.%d %d.%d\xDF" "C",  I_RH, D_RH,I_TEMP, D_TEMP);
 
 }

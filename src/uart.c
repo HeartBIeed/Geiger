@@ -1,9 +1,9 @@
 #include "../inc/uart.h"
 
-volatile uint8_t received_byte = 0;
-volatile uint8_t data_ready = 0;
-volatile uint8_t uart_rx_buffer[32];
-volatile uint8_t uart_rx_index = 0;
+ volatile uint8_t uart_received_byte;
+ volatile uint8_t uart_data_ready =0;
+ volatile uint8_t uart_rx_buffer[32];
+ volatile uint8_t uart_rx_index =0;
 
 void USART_ini(uint16_t speed)
 {
@@ -17,7 +17,7 @@ void USART_ini(uint16_t speed)
 
 void USART_TX(unsigned int data)
 {
-	while (!(UCSRA&(1<<UDRE))); //проверяем в усра удре бит что он 0 ибо это готовность к записи
+	while (!(UCSRA&(1<<UDRE))); //проверяем UDRE бит, что он 0 - это готовность к записи
 	
 	UDR = data; // send data
 
@@ -25,22 +25,22 @@ void USART_TX(unsigned int data)
 
 
 ISR(USART_RXC_vect) {
-	received_byte = UDR;  // сохраняем байт в глобальную переменную
-	data_ready = 1;
+	uart_received_byte = UDR;  // сохраняем байт в глобальную переменную
+	uart_data_ready = 1;
 }
 
 void echo()
 {
-	USART_TX(received_byte);
+	USART_TX(uart_received_byte);
 }
 
 void UART_read_data()
 {
 	
-	if (data_ready)
+	if (uart_data_ready)
 		{
-		data_ready = 0;	
-		uart_rx_buffer[uart_rx_index] = received_byte;
+		uart_data_ready = 0;	
+		uart_rx_buffer[uart_rx_index] = uart_received_byte;
 		uart_rx_index++;
 
 		}

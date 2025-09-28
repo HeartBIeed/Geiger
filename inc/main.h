@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//#include "dht11/dht.h"
 #include "lcd1602.h"
 #include "ds1307.h"
 #include "pwm.h"

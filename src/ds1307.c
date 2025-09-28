@@ -26,14 +26,14 @@ void i2c_send(unsigned char data)
 }
 
 
-unsigned char DecToBSD(unsigned char chin) // 
+unsigned char DecToBSD(unsigned char chin) // 10 >> 0x10
 {
 	unsigned char chout = ((chin / 10)<<4)|(chin % 10);
 	
 	return chout;
 }
 
-unsigned char BSDtoDec(unsigned char chin) //  
+unsigned char BSDtoDec(unsigned char chin) // 0x10 >> 10
 {
 	unsigned char chout = ((chin >> 4 )*10) + (0b00001111 & chin);
 	
@@ -57,8 +57,8 @@ unsigned char i2c_read_lastbyte(void) // чтение последнего ба�
 }
 
 void lcd_print_number(unsigned char num) {
-	sendchar((num / 10) + '0');  // старшая цифра
-	sendchar((num % 10) + '0');  // младшая цифра
+	sendchar((num / 10) + '0');  // десятки
+	sendchar((num % 10) + '0');  // единицы
 }
 
 void set_time(uint32_t h,uint32_t m)
@@ -75,7 +75,7 @@ void set_time(uint32_t h,uint32_t m)
 } 
 
 
-void time_to_lcd()
+void time_to_lcd(int x,int y)
 {
 	i2c_init();
 	
@@ -95,7 +95,7 @@ void time_to_lcd()
 	min = BSDtoDec(min);
 	hour =BSDtoDec(hour);
 
-	setpos(0,0);
+	setpos(x,y);
 
 	lcd_print_number(hour);
 	sendchar(0x3A);
