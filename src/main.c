@@ -2,8 +2,8 @@
 
 
 volatile uint32_t ms_cnt= 0;// סקועקטך ms
-volatile uint16_t gamma_cnt = 0; // סקוע סמבûעטי
-volatile uint32_t gamma_fact = 0; //פכאד סמבûעטÿ
+volatile uint32_t gamma_cnt = 0; // סקוע סמבûעטי
+volatile uint8_t gamma_fact = 0; //פכאד סמבûעטÿ
 
 
 
@@ -90,6 +90,7 @@ while(1)
 		
 		
 //------------------- dht to lcd -------------		
+/*
 if (ms_cnt - start2 >= 3000)
 {
 
@@ -98,7 +99,7 @@ if (ms_cnt - start2 >= 3000)
  	send_ptr_str(data);
 		start2 = get_mills();
 	}
-
+*/
 	 
 //---------------uart -------------------------	 
 
