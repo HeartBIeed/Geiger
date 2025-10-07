@@ -77,6 +77,8 @@ DDRD |= (1<<6); // pin PD6
 //----------------------------------------------
 uint32_t start = 0;
 uint32_t start2 = 0;
+uint32_t start3 = 0;
+
 uint32_t start_cnt = 0;
 char num_gm_cnt[4]="00/n";
 
@@ -85,21 +87,26 @@ while(1)
 	{	
 		
 //----------------time to lcd ----------------
-		
+if (ms_cnt - start3 >= 500)
+{		
 		time_to_lcd(0,0);
+		
+		start3 = get_mills();
+	}
 		
 		
 //------------------- dht to lcd -------------		
-/*
+
 if (ms_cnt - start2 >= 3000)
 {
 
  	dht_write_data(data);
  	setpos(0,1);
  	send_ptr_str(data);
+	 
 		start2 = get_mills();
 	}
-*/
+
 	 
 //---------------uart -------------------------	 
 

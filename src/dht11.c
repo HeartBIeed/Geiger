@@ -20,14 +20,14 @@ void dht_response(void) //ответ - ждем пока датчик моргн
 }
 
 uint8_t dht_receive_data(){
-
+cli();
 uint8_t c = 0;
 
 	for (int i = 0; i < 8; i++)
 	{
 
 		while ((PIND &(1<<DHT_PIN))==0); // ждем появления 1. пока 0 - не выходим из цикла
-		_delay_us(30);
+		_delay_us(50);
 
 		if (PIND &(1<<DHT_PIN)) // если пин в 1 более 30 мс
 		{
@@ -39,7 +39,7 @@ uint8_t c = 0;
 		}
 
 	}
-
+sei();
 	return c;
 }
 
@@ -61,7 +61,7 @@ void dht_write_data(char* data) // пишет в массив дата стро�
 		sprintf(data,"%d %d", I_RH,I_TEMP);
 	}
 	else{
-		sprintf(data,"ERR");
+		sprintf(data,"ERR %d %d", I_RH,I_TEMP);
 
 	}
 	
