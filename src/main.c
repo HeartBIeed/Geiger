@@ -47,7 +47,7 @@ int main(void)
  	USART_TX('A');
 //------------------------ interrupt--------------
 
-	MCUCR  = (1<<ISC00)|(1<<ISC01); // rising INT0 
+	MCUCR  = /*(1<<ISC00)|*/(1<<ISC01); // falling INT0 
 	GICR |= (1<<INT0); // int 0 enable
 	
 //------------------------set ds1307-----------------
@@ -70,7 +70,7 @@ int main(void)
 // ------------DHT11-----------------------
  	char data[16];
 
-DDRD |= (1<<6); // pin PD6
+DDRD |= (1<<7); // pin PD7
 
 	 // = "H:60% T:25\xDF" "C";
 
@@ -131,7 +131,6 @@ if (ms_cnt - start2 >= 3000)
 				sprintf(num_gm_cnt,"%d",gamma_cnt);
 				send_ptr_str(num_gm_cnt);
 				start_cnt = gamma_cnt;	
-						
 			}
 
 

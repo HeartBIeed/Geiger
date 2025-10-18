@@ -278,7 +278,7 @@ Disassembly of section .text:
 Disassembly of section .text:
 
 00002120 <__bad_interrupt>:
-    2120:	0c 94 00 00 	jmp	0	; 0x0 <__TEXT_REGION_ORIGIN__>
+    2120:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 Disassembly of section .text.dht_request:
 
@@ -699,7 +699,7 @@ Disassembly of section .text.time_to_lcd:
     181c:	0e 94 63 10 	call	0x20c6	; 0x20c6 <i2c_read>
     1820:	80 93 61 00 	sts	0x0061, r24	; 0x800061 <min>
     1824:	0e 94 6a 10 	call	0x20d4	; 0x20d4 <i2c_read_lastbyte>
-    1828:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <__DATA_REGION_ORIGIN__>
+    1828:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <_edata>
     182c:	0e 94 8a 10 	call	0x2114	; 0x2114 <i2c_stop>
     1830:	80 91 62 00 	lds	r24, 0x0062	; 0x800062 <sec>
     1834:	0e 94 fe 0f 	call	0x1ffc	; 0x1ffc <BSDtoDec>
@@ -707,13 +707,13 @@ Disassembly of section .text.time_to_lcd:
     183c:	80 91 61 00 	lds	r24, 0x0061	; 0x800061 <min>
     1840:	0e 94 fe 0f 	call	0x1ffc	; 0x1ffc <BSDtoDec>
     1844:	80 93 61 00 	sts	0x0061, r24	; 0x800061 <min>
-    1848:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <__DATA_REGION_ORIGIN__>
+    1848:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <_edata>
     184c:	0e 94 fe 0f 	call	0x1ffc	; 0x1ffc <BSDtoDec>
-    1850:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <__DATA_REGION_ORIGIN__>
+    1850:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <_edata>
     1854:	b8 01       	movw	r22, r16
     1856:	8c 2f       	mov	r24, r28
     1858:	0e 94 28 10 	call	0x2050	; 0x2050 <setpos>
-    185c:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <__DATA_REGION_ORIGIN__>
+    185c:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <_edata>
     1860:	0e 94 6d 0e 	call	0x1cda	; 0x1cda <lcd_print_number>
     1864:	8a e3       	ldi	r24, 0x3A	; 58
     1866:	0e 94 1e 10 	call	0x203c	; 0x203c <sendchar>
@@ -1157,8 +1157,8 @@ int main(void)
  bb0:	0e 94 83 10 	call	0x2106	; 0x2106 <USART_TX>
 //------------------------ interrupt--------------
 
-	MCUCR  = (1<<ISC00)|(1<<ISC01); // rising INT0 
- bb4:	83 e0       	ldi	r24, 0x03	; 3
+	MCUCR  = /*(1<<ISC00)|*/(1<<ISC01); // falling INT0 
+ bb4:	82 e0       	ldi	r24, 0x02	; 2
  bb6:	85 bf       	out	0x35, r24	; 53
 	GICR |= (1<<INT0); // int 0 enable
  bb8:	8b b7       	in	r24, 0x3b	; 59
@@ -1198,9 +1198,9 @@ int main(void)
 // ------------DHT11-----------------------
  	char data[16];
 
-DDRD |= (1<<6); // pin PD6
+DDRD |= (1<<7); // pin PD7
  bea:	81 b3       	in	r24, 0x11	; 17
- bec:	80 64       	ori	r24, 0x40	; 64
+ bec:	80 68       	ori	r24, 0x80	; 128
  bee:	81 bb       	out	0x11, r24	; 17
 uint32_t start = 0;
 uint32_t start2 = 0;
@@ -1243,7 +1243,7 @@ uint32_t start2 = 0;
  c0c:	c1 2c       	mov	r12, r1
  c0e:	d1 2c       	mov	r13, r1
  c10:	76 01       	movw	r14, r12
-DDRD |= (1<<6); // pin PD6
+DDRD |= (1<<7); // pin PD7
 
 	 // = "H:60% T:25\xDF" "C";
 
@@ -1401,7 +1401,6 @@ if (ms_cnt - start2 >= 3000)
  d20:	de bf       	out	0x3e, r29	; 62
  d22:	0f be       	out	0x3f, r0	; 63
  d24:	cd bf       	out	0x3d, r28	; 61
-						
 			}
 
 
