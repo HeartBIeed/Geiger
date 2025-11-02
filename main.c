@@ -40,7 +40,7 @@ int main(void)
 	sei();
 	timer_ini();
 	i2c_init();		
-
+	buttons_init();
 	LCD1602_ini();
 	USART_init(103); //9600
 
@@ -64,7 +64,7 @@ int main(void)
 		set_duty(dt1,dt1); // PD4
 		
 	pwm_init_lcd(); //подсветка LCD (PB3)
-		OCR0 = pwm_proc(50);
+//	OCR0 = pwm_proc(50);
 
 
 //----------------------------------------------
@@ -77,7 +77,10 @@ char num_gm_cnt[5]="00/n"; // строка для sprintf
 
 while(1)
 	{	
-		
+
+buttons();
+OCR0 = pwm_proc(light);
+
 //----------------time to lcd ----------------
 if (ms_cnt - start[1] >= 500)
 	{		
@@ -112,11 +115,11 @@ if (gamma_flag)
 		set_lcd_pos(0,0);
 		send_lcd_char('G');
 
-		set_lcd_pos(5,1);
+		set_lcd_pos(6,1);
 		sprintf(num_gm_cnt,"%d",num_ones(gamma_array)); // запись int в строку
 		send_lcd_ptr_str(num_gm_cnt);
 
-		set_lcd_pos(7,1);
+		set_lcd_pos(8,1);
 		send_lcd_ptr_str("uR"); //мк Рентген
 
 
