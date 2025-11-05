@@ -5,8 +5,11 @@ volatile int light = 25;
 
 void buttons_init()
     {
-        DDRC |= 0b10000000;
-        PORTC |= 0b11111100;
+        DDRD &= ~(1<<6)|(1<<7); // input
+        PORTD |= (1<<6)|(1<<7); //up
+
+        DDRB |= (1<<2); // out
+        PORTB |= (1<<2); // up
     }
 
 void buttons()
@@ -16,7 +19,7 @@ void buttons()
         if (debounce(6)) edit_light(); // +25% brightness
 
         // press button 2 (to PC)
-        if (debounce(2)) PORTC ^= (1<<7); // invert pin sound
+        if (debounce(5)) PORTB ^= (1<<2); // invert pin sound
 
 
 
@@ -44,7 +47,7 @@ void edit_light() // яркость дисплея
 uint8_t debounce(uint8_t pin) // обработка нажатия кнопки (дребезг + состояние)
     {
 
-    static uint8_t current_state[8] = {RELEASED}; // стартовые состояния "отпущено"
+    static uint8_t current_state[8] = {[0 ... 7] = RELEASED}; // стартовые состояния "отпущено"
                                                   // массив для 8 кнопок
     switch (current_state[pin])
         {

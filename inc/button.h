@@ -1,8 +1,8 @@
 #ifndef BUTTON_H_
 #define BUTTON_H_
 
-#define BUTPORT PORTC
-#define BUTPIN PINC
+#define BUTPORT PORTD
+#define BUTPIN PIND
 
 
 #include "main.h"
