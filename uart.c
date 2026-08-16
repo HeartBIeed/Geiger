@@ -44,13 +44,6 @@ void USART_send_str(const char *str){ // TX string
 	
 	while (*str) USART_TX(*str++); 
 }
-
-void USART_echo(){
-
-	USART_send_str((char*)data_buffer);
-	data_ready = 0; 
-}
-
 	
 void USART_cmdHandler(){
 

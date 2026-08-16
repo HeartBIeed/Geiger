@@ -1,5 +1,23 @@
 #include "main.h"
 
+volatile uint32_t count = 0;
+volatile uint8_t G_flag =0;
+
+void EXINT_init(){
+
+	MCUCR  = (1<<ISC01); // falling INT0 
+	GICR |= (1<<INT0); // int0 enable (PD2)
+}
+
+
+ISR(INT0_vect){ // внешнее прерывание (PD2) от счетчика Гейгера
+    
+    count++;
+	G_flag = 1;
+}
+
+
+
 int main(void){
 
 	sei();
@@ -56,21 +74,31 @@ while(1) {
 
 //*********** Time And Radiation ************
 
-	if (ms_cnt - start[0] >= 900){	
+	if (ms_cnt - start[0] >= 700){	
 
 	DS1307_time2LCD(4,0);
 
-	char num_gm_cnt[7];
-	sprintf(num_gm_cnt,"%d uR",Radiation()); 
-
-	LCD1602_setPos(6,1);
-	LCD1602_sendString(num_gm_cnt);
+	char str[16];
+	sprintf(str,"%d\r\n",count);
+	USART_send_str(str);
 
 
 	start[0] = get_mills();
 	}
 
+	if (ms_cnt - start[1] >= 5000){	
 
+	
+		char num_gm_cnt[7];
+		sprintf(num_gm_cnt,"%d uR",Radiation()); 
+	
+		LCD1602_setPos(6,1);
+		LCD1602_sendString("num_gm_cnt");
+	
+	
+		start[1] = get_mills();
+		}
+	
 	} // end while
 
 } // end main

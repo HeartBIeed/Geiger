@@ -21,5 +21,9 @@
 #include "button.h"
 #include "gcounter.h"
 
+volatile extern uint32_t count;
+volatile extern uint8_t G_flag;
+
+
 #endif /* MAIN_H_ */
 

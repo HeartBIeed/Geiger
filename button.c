@@ -9,10 +9,10 @@ volatile uint8_t brightness = 50;
 void Buttons_init(){
 
     DDRC &= ~((1<<4)|(1<<5)|(1<<6)); // input 4,5,6,
-    PORTC |= (1<<4)|(1<<5)|(1<<6); //up
+    PORTC |= (1<<4)|(1<<5)|(1<<6); //pull up
 
     DDRD |= (1<<6);  // snd pin to output
-	PORTD |= (1<<6); // pull up 
+	PORTD |= (1<<6); // snd pin pull up (off sound)
 
 }
 
@@ -21,7 +21,7 @@ void Buttons_Handler(){
     if (Debounce(6)) Edit_LCD_bright(); // +25% brightness
 
    // press button 2 
-    if (Debounce(5)) PORTD ^= (1 << 6); // invert pin sound
+    if (Debounce(4)) PORTD ^= (1 << 6); // invert pin sound
 
  //   if (Debounce(4)) ;
 
@@ -38,7 +38,7 @@ void Edit_LCD_bright(){
 
 int Debounce(uint8_t pin){ // обработка нажатия кнопки (дребезг + состояние)
 
-    static uint8_t current_state[16]; 
+    static uint8_t current_state[8]; 
 
     switch (current_state[pin])
         {

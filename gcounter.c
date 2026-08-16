@@ -1,7 +1,5 @@
 #include "gcounter.h"
 
-volatile uint32_t count = 0;
-
 uint16_t SENS  = 34; //чувствительность
 uint16_t Counts[10] = {0}; // десять периодов
 uint16_t SUMofCounts = 0; // Сумма событий
@@ -9,21 +7,6 @@ uint16_t SUMofCounts = 0; // Сумма событий
 uint8_t i = 0; // индекс периодов
 uint8_t periods_passed = 0; // количество прошедших периодов
 uint32_t total_sec = 1; // общее время работы
-
-volatile int8_t G_flag = 0; // флаг события
-
-void EXINT_init(){
-
-	MCUCR  = (1<<ISC01); // falling INT0 
-	GICR |= (1<<INT0); // int0 enable (PD2)
-}
-
-ISR(INT0_vect){ // внешнее прерывание (PD2) от счетчика Гейгера
-    
-    count++;
-	G_flag = 1;
-}
-
 
 
 uint16_t Radiation(){ 
